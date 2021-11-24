@@ -26,11 +26,13 @@ runs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Setup ssh key for submodules
-      if: ${{ inputs.submodules_key != '' }}
+    - name: Load SSH keys
+      if: ${{ (inputs.submodules_key != '') || (inputs.actions_key != '') }}
       uses: webfactory/ssh-agent@v0.5.1
       with:
-        ssh-private-key: ${{ inputs.submodules_key }}
+        ssh-private-key: |
+          ${{ inputs.submodules_key }}
+          ${{ inputs.actions_key }}
 
     - name: Checkout submodule
       if: ${{ inputs.submodules_key != '' }}
@@ -44,4 +46,3 @@ runs:
         repository: ${{ github.repository_owner }}/${{ inputs.private_actions }}
         ref: main
         path: .github/${{ inputs.private_actions }}
-        ssh-key: ${{ inputs.actions_key }}
