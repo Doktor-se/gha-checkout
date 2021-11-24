@@ -1,0 +1,42 @@
+name: private checkout
+description: checkout for repo, private submodules and private actions
+
+inputs:
+  submodules_key:
+    description: SSH key used for accessing submodules.
+    required: false
+
+  actions_key:
+    description: SSH key used for accessing private actions
+    required: false
+
+  private_actions:
+    description: Repository name for private actions
+    required: false
+    default: composite-actions
+
+runs:
+  using: composite
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup ssh key for submodules
+      if: ${{ inputs.submodules_key != '' }}
+      uses: webfactory/ssh-agent@v0.5.1
+      with:
+        ssh-private-key: ${{ inputs.submodules_key }}
+
+    - name: Checkout submodule
+      if: ${{ inputs.submodules_key != '' }}
+      run: git submodule update --init --recursive
+      shell: bash
+
+    - name: Checkout private actions
+      if: ${{ inputs.actions_key != '' }}
+      uses: actions/checkout@v2
+      with:
+        repository: ${{ github.repository_owner }}/composite-actions
+        ref: main
+        path: .github/composite-actions
+        ssh-key: ${{ inputs.actions_key }}
