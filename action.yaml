@@ -26,19 +26,6 @@ runs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Load SSH keys
-      if: ${{ (inputs.submodules_key != '') || (inputs.actions_key != '') }}
-      uses: webfactory/ssh-agent@v0.5.1
-      with:
-        ssh-private-key: |
-          ${{ inputs.submodules_key }}
-          ${{ inputs.actions_key }}
-
-    - name: Checkout submodule
-      if: ${{ inputs.submodules_key != '' }}
-      run: git submodule update --init --recursive
-      shell: bash
-
     - name: Checkout private actions
       if: ${{ inputs.actions_key != '' }}
       uses: actions/checkout@v2
@@ -47,3 +34,14 @@ runs:
         ref: main
         path: .github/${{ inputs.private_actions }}
         ssh-key: ${{ inputs.actions_key }}
+
+    - name: Load SSH keys
+      if: ${{ (inputs.submodules_key != '')}}
+      uses: webfactory/ssh-agent@v0.5.1
+      with:
+        ssh-private-key: ${{ inputs.submodules_key }}
+
+    - name: Checkout submodule
+      if: ${{ inputs.submodules_key != '' }}
+      run: git submodule update --init --recursive
+      shell: bash
