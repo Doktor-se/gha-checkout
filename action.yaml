@@ -41,7 +41,7 @@ runs:
       if: ${{ inputs.actions_key != '' }}
       uses: actions/checkout@v2
       with:
-        repository: ${{ github.repository_owner }}/composite-actions
+        repository: ${{ github.repository_owner }}/${{ inputs.private_actions }}
         ref: main
-        path: .github/composite-actions
+        path: .github/${{ inputs.private_actions }}
         ssh-key: ${{ inputs.actions_key }}
