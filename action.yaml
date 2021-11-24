@@ -1,5 +1,10 @@
 name: private checkout
-description: checkout for repo, private submodules and private actions
+description: Composite action to checkout current repository, initialise private submoduels and checkout private actions repository
+author: Flydiverny
+
+branding:
+  icon: download
+  color: purple
 
 inputs:
   submodules_key:
