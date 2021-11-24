@@ -34,6 +34,7 @@ runs:
         ref: main
         path: .github/${{ inputs.private_actions }}
         ssh-key: ${{ inputs.actions_key }}
+        persist-credentials: false
 
     - name: Load SSH keys
       if: ${{ (inputs.submodules_key != '')}}
