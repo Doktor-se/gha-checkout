@@ -46,3 +46,4 @@ runs:
         repository: ${{ github.repository_owner }}/${{ inputs.private_actions }}
         ref: main
         path: .github/${{ inputs.private_actions }}
+        ssh-key: ${{ inputs.actions_key }}
