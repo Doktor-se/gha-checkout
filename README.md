@@ -1,4 +1,4 @@
-# private-checkout
+# gha-checkout
 
 If you are working in a private organisation which uses submodules and/or private github actions its a hassle to checkout.
 
@@ -16,7 +16,7 @@ on: pull_request
 
 jobs:
   hello-world:
-    - uses: doktor-se/private-checkout@v1
+    - uses: doktor-se/gha-checkout@v1
       with:
         submodules_key: ${{ secrets.SSH_SUBMODULES_KEY }}
         actions_key: ${{ secrets.SSH_ACTIONS_KEY }}
