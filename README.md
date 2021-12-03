@@ -16,7 +16,7 @@ on: pull_request
 
 jobs:
   hello-world:
-    - uses: Flydiverny/private-checkout@v1
+    - uses: doktor-se/private-checkout@v1
       with:
         submodules_key: ${{ secrets.SSH_SUBMODULES_KEY }}
         actions_key: ${{ secrets.SSH_ACTIONS_KEY }}

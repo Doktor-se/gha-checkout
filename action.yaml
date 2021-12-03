@@ -1,10 +1,6 @@
-name: private checkout
+name: gha-checkout
 description: Composite action to checkout current repository, initialise private submoduels and checkout private actions repository
-author: Flydiverny
-
-branding:
-  icon: download
-  color: purple
+author: Doktor.se
 
 inputs:
   submodules_key:
