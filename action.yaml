@@ -40,5 +40,5 @@ runs:
 
     - name: Checkout submodule
       if: ${{ inputs.submodules_key != '' }}
-      run: git submodule update --init --recursive
+      run: git -c protocol.version=2 submodule update --init --recursive --depth=1 --force
       shell: bash
