@@ -16,6 +16,11 @@ inputs:
     required: false
     default: composite-actions
 
+  actions_ref:
+    description: Git reference to checkout for private actions
+    required: false
+    default: main
+
 runs:
   using: composite
   steps:
@@ -27,7 +32,7 @@ runs:
       uses: actions/checkout@v2
       with:
         repository: ${{ github.repository_owner }}/${{ inputs.private_actions }}
-        ref: main
+        ref: ${{ inputs.actions_ref }}
         path: .github/${{ inputs.private_actions }}
         ssh-key: ${{ inputs.actions_key }}
         persist-credentials: false
