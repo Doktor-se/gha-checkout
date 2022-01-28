@@ -3,12 +3,13 @@ description: Composite action to checkout current repository, initialise private
 author: Doktor.se
 
 inputs:
-  submodules_key:
-    description: SSH key used for accessing submodules.
+  token:
+    description: Github PAT with access to repo, submodules and actions
     required: false
 
-  actions_key:
-    description: SSH key used for accessing private actions
+  fetch-depth:
+    description: Number of commits to fetch, this applies to code and submodule, not actions. 0 indicates all history for all branches and tags.
+    default: 1
     required: false
 
   private_actions:
@@ -21,11 +22,20 @@ inputs:
     required: false
     default: main
 
+  submodules:
+    description: Whether to checkout submodules `true` to checkout submodules or `recursive` to recursively checkout submodules.
+    default: true
+    required: false
+
 runs:
   using: composite
   steps:
     - name: Checkout
       uses: actions/checkout@v2
+      with:
+        token: ${{ input.token }}
+        fetch-depth: ${{ input.fetch-depth }}
+        submodules: ${{ input.submodules }}
 
     - name: Checkout private actions
       if: ${{ inputs.actions_key != '' }}
@@ -34,16 +44,6 @@ runs:
         repository: ${{ github.repository_owner }}/${{ inputs.private_actions }}
         ref: ${{ inputs.actions_ref }}
         path: .github/${{ inputs.private_actions }}
-        ssh-key: ${{ inputs.actions_key }}
+        token: ${{ input.token }}
         persist-credentials: false
 
-    - name: Load SSH keys
-      if: ${{ (inputs.submodules_key != '')}}
-      uses: webfactory/ssh-agent@v0.5.1
-      with:
-        ssh-private-key: ${{ inputs.submodules_key }}
-
-    - name: Checkout submodule
-      if: ${{ inputs.submodules_key != '' }}
-      run: git -c protocol.version=2 submodule update --init --recursive --depth=1 --force
-      shell: bash
