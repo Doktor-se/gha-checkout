@@ -12,20 +12,20 @@ inputs:
     default: 1
     required: false
 
-  private_actions:
-    description: Repository name for private actions
-    required: false
-    default: composite-actions
-
-  actions_ref:
-    description: Git reference to checkout for private actions
-    required: false
-    default: main
-
   submodules:
     description: Whether to checkout submodules `true` to checkout submodules or `recursive` to recursively checkout submodules.
     default: true
     required: false
+
+  actions:
+    description: Repository name for private actions, set to 'false' to skip
+    default: composite-actions
+    required: false
+
+  actions-ref:
+    description: Git reference to checkout for private actions
+    required: false
+    default: main
 
 runs:
   using: composite
@@ -38,12 +38,12 @@ runs:
         submodules: ${{ inputs.submodules }}
 
     - name: Checkout private actions
-      if: ${{ inputs.actions_key != '' }}
+      if: ${{ inputs.actions != '' && inputs.actions != 'false' }}
       uses: actions/checkout@v2
       with:
-        repository: ${{ github.repository_owner }}/${{ inputs.private_actions }}
-        ref: ${{ inputs.actions_ref }}
-        path: .github/${{ inputs.private_actions }}
+        repository: ${{ github.repository_owner }}/${{ inputs.actions }}
+        ref: ${{ inputs.actions-ref }}
+        path: .github/${{ inputs.actions }}
         token: ${{ inputs.token }}
         persist-credentials: false
 
