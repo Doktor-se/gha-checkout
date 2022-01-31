@@ -33,9 +33,9 @@ runs:
     - name: Checkout
       uses: actions/checkout@v2
       with:
-        token: ${{ input.token }}
-        fetch-depth: ${{ input.fetch-depth }}
-        submodules: ${{ input.submodules }}
+        token: ${{ inputs.token }}
+        fetch-depth: ${{ inputs.fetch-depth }}
+        submodules: ${{ inputs.submodules }}
 
     - name: Checkout private actions
       if: ${{ inputs.actions_key != '' }}
@@ -44,6 +44,6 @@ runs:
         repository: ${{ github.repository_owner }}/${{ inputs.private_actions }}
         ref: ${{ inputs.actions_ref }}
         path: .github/${{ inputs.private_actions }}
-        token: ${{ input.token }}
+        token: ${{ inputs.token }}
         persist-credentials: false
 
