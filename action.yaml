@@ -7,6 +7,10 @@ inputs:
     description: Github PAT with access to repo, submodules and actions
     required: false
 
+  ref:
+    description: Git reference to checkout for repo
+    required: false
+
   fetch-depth:
     description: Number of commits to fetch, this applies to code and submodule, not actions. 0 indicates all history for all branches and tags.
     default: 1
@@ -35,6 +39,7 @@ runs:
       with:
         token: ${{ inputs.token }}
         fetch-depth: ${{ inputs.fetch-depth }}
+        ref: ${{ inputs.ref }}
         submodules: ${{ inputs.submodules }}
 
     - name: Checkout private actions
