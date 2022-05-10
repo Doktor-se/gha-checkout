@@ -66,6 +66,7 @@ runs:
         echo 'echo $DSO_GH_PAT' > $HOME/.git-askpass
         chmod +x $HOME/.git-askpass
         git config --global url.https://github.com/.insteadOf git@github.com:
+        cat $GITHUB_ENV
 
     # - name: Configure global git config
     #   if: ${{ inputs.token != '' && inputs.global-config != '' && inputs.global-config != 'false' }}
