@@ -62,11 +62,13 @@ runs:
       shell: bash
       run: |
         # ${{ runner.temp }}
-        echo "https://x-access-token:${{ inputs.token }}@github.com/" >> ~/.git-credentials
-        echo "Setting credential helper"
-        git config --global credential.helper 'store'
-        echo "Unsetting existing config, if any"
+        # echo "https://x-access-token:${{ inputs.token }}@github.com/" >> ~/.git-credentials
+        # echo "Setting credential helper"
+        git config --global credential.https://github.com.username x-access-token
+        git config --global credential.https://github.com.password ${{ inputs.token }}
+        # echo "Unsetting existing config, if any"
         git config --global --unset-all "url.https://github.com/.insteadOf" || echo "Nothing to unset, Config didn't exist"
-        echo "Setting ssh -> https"
+        # echo "Setting ssh -> https"
         git config --global --add url.https://github.com/.insteadOf git@github.com:
         echo "Done"
+        cat ~/.gitconfig
