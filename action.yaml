@@ -66,7 +66,12 @@ runs:
         echo 'echo $DSO_GH_PAT' > $HOME/.git-askpass
         chmod +x $HOME/.git-askpass
         git config --global url.https://github.com/.insteadOf git@github.com:
-        cat $GITHUB_ENV
+        echo $GITHUB_ENV
+
+#         # or you can specify your own shell snippet
+# [credential "https://example.com"]
+# 	username = your_user
+# 	helper = "!f() { test \"$1\" = get && echo \"password=$(cat $HOME/.secret)\"; }; f"
 
     # - name: Configure global git config
     #   if: ${{ inputs.token != '' && inputs.global-config != '' && inputs.global-config != 'false' }}
@@ -75,8 +80,8 @@ runs:
     #     # ${{ runner.temp }}
     #     # echo "https://x-access-token:${{ inputs.token }}@github.com/" >> ~/.git-credentials
     #     # echo "Setting credential helper"
-    #     git config --global credential.https://github.com.username x-access-token
-    #     git config --global credential.https://github.com.password ${{ inputs.token }}
+    #     git config --global credential.https://github.com/${{ github.repository_owner }}.username x-access-token
+    #     git config --global credential.https://github.com/${{ github.repository_owner }}.helper "!f() { test \"$1\" = get && echo \"password=${{ inputs.token }}\"; }; f"
     #     # echo "Unsetting existing config, if any"
     #     git config --global --unset-all "url.https://github.com/.insteadOf" || echo "Nothing to unset, Config didn't exist"
     #     # echo "Setting ssh -> https"
