@@ -31,6 +31,11 @@ inputs:
     required: false
     default: main
 
+  global-config:
+    description: Configure git to be able to clone other repositories with the provided token, set to 'false' to disable
+    required: false
+    default: true
+
 runs:
   using: composite
   steps:
@@ -52,3 +57,12 @@ runs:
         token: ${{ inputs.token }}
         persist-credentials: false
 
+    - name: Configure global git credentials for ${{ github.repository_owner }}
+      if: ${{ inputs.token != '' && inputs.global-config != '' && inputs.global-config != 'false' }}
+      shell: bash
+      run: |
+        echo "Configuring credentials for https://github.com/${{ github.repository_owner }}"
+        echo "GHA_CHECKOUT_TOKEN=${{ inputs.token }}" >> $GITHUB_ENV
+        git config --global credential.https://github.com/${{ github.repository_owner }}.username x-access-token
+        git config --global credential.https://github.com/${{ github.repository_owner }}.helper "!f() { test \"\$1\" = get && echo \"password=\$GHA_CHECKOUT_TOKEN\"; }; f"
+        git config --global url.https://github.com/.insteadOf git@github.com:
