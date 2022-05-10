@@ -57,21 +57,27 @@ runs:
         token: ${{ inputs.token }}
         persist-credentials: false
 
+    # - name: Configure global git config
+    #   if: ${{ inputs.token != '' && inputs.global-config != '' && inputs.global-config != 'false' }}
+    #   shell: bash
+    #   run: |
+    #     echo "DSO_GH_PAT=${{ inputs.token }}" >> $GITHUB_ENV
+    #     echo "GIT_ASKPASS=$HOME/.git-askpass" >> $GITHUB_ENV
+    #     echo 'echo $DSO_GH_PAT' > $HOME/.git-askpass
+    #     chmod +x $HOME/.git-askpass
+    #     git config --global url.https://github.com/.insteadOf git@github.com:
+    #     echo $GITHUB_ENV
+
     - name: Configure global git config
       if: ${{ inputs.token != '' && inputs.global-config != '' && inputs.global-config != 'false' }}
       shell: bash
       run: |
-        echo "DSO_GH_PAT=${{ inputs.token }}" >> $GITHUB_ENV
-        echo "GIT_ASKPASS=$HOME/.git-askpass" >> $GITHUB_ENV
-        echo 'echo $DSO_GH_PAT' > $HOME/.git-askpass
-        chmod +x $HOME/.git-askpass
+        echo "GHA_CHECKOUT_TOKEN=${{ inputs.token }}" >> $GITHUB_ENV
+        git config --global credential.https://github.com/${{ github.repository_owner }}.username x-access-token
+        git config --global credential.https://github.com/${{ github.repository_owner }}.helper "!f() { test \"$1\" = get && echo \"password=$GHA_CHECKOUT_TOKEN\"; }; f"
         git config --global url.https://github.com/.insteadOf git@github.com:
-        echo $GITHUB_ENV
+        cat ~/.gitconfig
 
-#         # or you can specify your own shell snippet
-# [credential "https://example.com"]
-# 	username = your_user
-# 	helper = "!f() { test \"$1\" = get && echo \"password=$(cat $HOME/.secret)\"; }; f"
 
     # - name: Configure global git config
     #   if: ${{ inputs.token != '' && inputs.global-config != '' && inputs.global-config != 'false' }}
