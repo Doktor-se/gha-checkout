@@ -61,14 +61,23 @@ runs:
       if: ${{ inputs.token != '' && inputs.global-config != '' && inputs.global-config != 'false' }}
       shell: bash
       run: |
-        # ${{ runner.temp }}
-        # echo "https://x-access-token:${{ inputs.token }}@github.com/" >> ~/.git-credentials
-        # echo "Setting credential helper"
-        git config --global credential.https://github.com.username x-access-token
-        git config --global credential.https://github.com.password ${{ inputs.token }}
-        # echo "Unsetting existing config, if any"
-        git config --global --unset-all "url.https://github.com/.insteadOf" || echo "Nothing to unset, Config didn't exist"
-        # echo "Setting ssh -> https"
-        git config --global --add url.https://github.com/.insteadOf git@github.com:
-        echo "Done"
-        cat ~/.gitconfig
+        echo "DSO_GH_PAT=${{ inputs.token }}" >> $GITHUB_ENV
+        echo 'echo $DSO_GH_PAT' > $HOME/.git-askpass
+        chmod +x $HOME/.git-askpass
+        git config --global url.https://github.com/.insteadOf git@github.com:
+
+    # - name: Configure global git config
+    #   if: ${{ inputs.token != '' && inputs.global-config != '' && inputs.global-config != 'false' }}
+    #   shell: bash
+    #   run: |
+    #     # ${{ runner.temp }}
+    #     # echo "https://x-access-token:${{ inputs.token }}@github.com/" >> ~/.git-credentials
+    #     # echo "Setting credential helper"
+    #     git config --global credential.https://github.com.username x-access-token
+    #     git config --global credential.https://github.com.password ${{ inputs.token }}
+    #     # echo "Unsetting existing config, if any"
+    #     git config --global --unset-all "url.https://github.com/.insteadOf" || echo "Nothing to unset, Config didn't exist"
+    #     # echo "Setting ssh -> https"
+    #     git config --global --add url.https://github.com/.insteadOf git@github.com:
+    #     echo "Done"
+    #     cat ~/.gitconfig
