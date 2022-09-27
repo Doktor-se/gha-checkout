@@ -6,6 +6,25 @@ This is a reusable composite action to reduce copy pasta in your workflows.
 
 This action will (depending on inputs) checkout the appropriate things. If you are using
 
+# Deprecation
+Private actions can now be used internally in private organisations.
+
+If you don't need submodules update your checkout to just
+
+```yaml
+    - uses: actions/checkout@v3
+```
+
+If you need submodules update your workflow to use the normal checkout action
+
+```yaml
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.<secret name> }}
+        submodules: true
+```
+
 
 # V3
 
