@@ -25,6 +25,19 @@ If you need submodules update your workflow to use the normal checkout action
         submodules: true
 ```
 
+Actions that were previously used with a relative path can be updated to be used like any other action,
+that means something like:
+
+```yaml
+uses: ./.github/composite-actions/some-private-action
+```
+
+would become
+
+```yaml
+uses: <org>/composite-actions/some-private-action@main
+```
+
 
 # V3
 
