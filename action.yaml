@@ -34,6 +34,10 @@ inputs:
 runs:
   using: composite
   steps:
+    - shell: bash
+      run: |
+        echo "::warning ::doktor-se/gha-checkout is deprecated! For more info read https://github.com/Doktor-se/gha-checkout#deprecation"
+
     - name: Checkout
       uses: actions/checkout@v3
       with:
