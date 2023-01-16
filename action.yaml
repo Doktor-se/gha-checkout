@@ -6,30 +6,36 @@ inputs:
   token:
     description: Github PAT with access to repo, submodules and actions
     required: false
+    deprecationMessage: doktor-se/gha-checkout is deprecated! For more info read https://github.com/Doktor-se/gha-checkout#deprecation
 
   ref:
     description: Git reference to checkout for repo
     required: false
+    deprecationMessage: doktor-se/gha-checkout is deprecated! For more info read https://github.com/Doktor-se/gha-checkout#deprecation
 
   fetch-depth:
     description: Number of commits to fetch, this applies to code and submodule, not actions. 0 indicates all history for all branches and tags.
     default: 1
     required: false
+    deprecationMessage: doktor-se/gha-checkout is deprecated! For more info read https://github.com/Doktor-se/gha-checkout#deprecation
 
   submodules:
     description: Whether to checkout submodules `true` to checkout submodules or `recursive` to recursively checkout submodules.
     default: true
     required: false
+    deprecationMessage: doktor-se/gha-checkout is deprecated! For more info read https://github.com/Doktor-se/gha-checkout#deprecation
 
   actions:
     description: Repository name for private actions, set to 'false' to skip
     default: composite-actions
     required: false
+    deprecationMessage: doktor-se/gha-checkout is deprecated! For more info read https://github.com/Doktor-se/gha-checkout#deprecation
 
   actions-ref:
     description: Git reference to checkout for private actions
     required: false
     default: main
+    deprecationMessage: doktor-se/gha-checkout is deprecated! For more info read https://github.com/Doktor-se/gha-checkout#deprecation
 
 runs:
   using: composite
